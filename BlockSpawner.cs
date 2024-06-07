@@ -6,7 +6,7 @@ public class BlockSpawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnDatBlock", 1f, 1f);
+        InvokeRepeating("SpawnDatBlock", 1f, Random.Range(.7f, 1.3f));
     }
 
     void SpawnDatBlock()
