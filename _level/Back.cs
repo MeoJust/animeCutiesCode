@@ -15,6 +15,8 @@ public class Back : MonoBehaviour
 
     void Update()
     {
+        if(_player == null) return;
+
         transform.position = new Vector3(transform.position.x, _player.transform.position.y + _offset, transform.position.z);
     }
 }

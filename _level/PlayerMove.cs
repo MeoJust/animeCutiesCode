@@ -16,7 +16,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
-        Vector3 horizontalVelocity = new Vector3(Time.deltaTime * _moveForce * horizontalInput, 0, 0);
+        Vector3 horizontalVelocity = new Vector3(Time.deltaTime * 3f * _moveForce * horizontalInput, 0, 0);
 
         float currentVerticalVelocity = Mathf.Max(_rb.linearVelocity.y, _fallSpeed);
 

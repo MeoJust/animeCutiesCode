@@ -14,30 +14,48 @@ public class LevelManager : MonoBehaviour
     [Header("BTNs")]
     [SerializeField] Button _backBTN;
 
-    float levelPoints = 0;
-    int currentPoints = 0;
-    int bonusMultiplier = 1;
+    float _levelPoints = 0;
+    int _currentPoints = 0;
+    int _bonusMultiplier = 1;
+
+    bool _isPlayerDead;
+
+    Player _player;
 
     void Start()
     {
         InvokeRepeating("AddBonus", 10f, 10f);
+
+        _player = FindObjectOfType<Player>();
+        _player.OnDie += OnPlayerDead;
 
         _backBTN.onClick.AddListener(() => SceneSwitcher.Instance.SwitchScene(0));
     }
 
     void Update()
     {
-        levelPoints += Time.deltaTime;
-        currentPoints = (int)(levelPoints * bonusMultiplier);
+        if (_isPlayerDead) return;
 
-        _pointsTXT.text = currentPoints.ToString();
-        _bonusTXT.text = "x" + bonusMultiplier.ToString();
+        _levelPoints += Time.deltaTime;
+        _currentPoints = (int)(_levelPoints * _bonusMultiplier);
+
+        _pointsTXT.text = _currentPoints.ToString();
+        _bonusTXT.text = "x" + _bonusMultiplier.ToString();
     }
 
-    void AddBonus(){
-        if(bonusMultiplier < 3){
-            bonusMultiplier++;
+    void AddBonus()
+    {
+        if (_bonusMultiplier < 3 && _player)
+        {
+            _bonusMultiplier++;
             Instantiate(_blockSpawner, transform.position, Quaternion.identity);
         }
+    }
+
+    void OnPlayerDead()
+    {
+        PointsManager.Instance.Points += _currentPoints;
+        print(PointsManager.Instance.Points);
+        _isPlayerDead = true;
     }
 }

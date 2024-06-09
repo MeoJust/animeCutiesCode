@@ -1,8 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IMG : MonoBehaviour
 {
-[SerializeField] int _cost;
+    [SerializeField] int _cost;
 
-//TODO:visible/not visible img by cost
+    void OnEnable()
+    {
+        if (_cost <= PointsManager.Instance.Points)
+        {
+            GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            GetComponent<Image>().color = Color.black;
+        }
+    }
 }
