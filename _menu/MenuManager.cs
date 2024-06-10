@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Button _playBTN;
     [SerializeField] Button _galleryBTN;
     [SerializeField] Button _optionsBTN;
+    [SerializeField] Button _rusBTN;
+    [SerializeField] Button _engBTN;
 
     [Header("TXTs")]
     [SerializeField] TextMeshProUGUI _pointsTXT;
@@ -18,6 +20,29 @@ public class MenuManager : MonoBehaviour
         _galleryBTN.onClick.AddListener(() => SceneSwitcher.Instance.SwitchScene(2));
         _optionsBTN.onClick.AddListener(() => SceneSwitcher.Instance.SwitchScene(3));
 
-        _pointsTXT.text = "total scores: " + PointsManager.Instance.Points.ToString();
+        _rusBTN.onClick.AddListener(SetRusLang);
+        _engBTN.onClick.AddListener(SetEngLang);
+
+        _pointsTXT.text = PointsManager.Instance.Points.ToString();
+    }
+
+    void SetRusLang()
+    {
+        PlayerPrefs.SetString("language", "rus");
+        LangChanger[] txts = FindObjectsOfType<LangChanger>();
+        foreach (LangChanger txt in txts)
+        {
+            txt.SetRusLang();
+        }
+    }
+
+    void SetEngLang()
+    {
+        PlayerPrefs.SetString("language", "eng");
+        LangChanger[] txts = FindObjectsOfType<LangChanger>();
+        foreach (LangChanger txt in txts)
+        {
+            txt.SetEngLang();
+        }
     }
 }

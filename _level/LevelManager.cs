@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
     float _levelPoints = 0;
     int _currentPoints = 0;
     int _bonusMultiplier = 1;
+    int _pointsBeforeBonus = 0;
 
     bool _isPlayerDead;
 
@@ -50,8 +51,9 @@ public class LevelManager : MonoBehaviour
     {
         if (_isPlayerDead) return;
 
-        _levelPoints += Time.deltaTime;
-        _currentPoints = (int)(_levelPoints * _bonusMultiplier);
+        _levelPoints += Time.deltaTime * _bonusMultiplier;
+        //_currentPoints = (int)(_levelPoints * _bonusMultiplier);
+        _currentPoints = (int)_levelPoints + _pointsBeforeBonus;
 
         _pointsTXT.text = _currentPoints.ToString();
         _bonusTXT.text = "x" + _bonusMultiplier.ToString();
@@ -59,16 +61,24 @@ public class LevelManager : MonoBehaviour
 
     void AddBonus()
     {
+        // if (_bonusMultiplier < 3 && _player)
+        // {
+        //     _bonusMultiplier++;
+        //     Instantiate(_blockSpawner, transform.position, Quaternion.identity);
+        // }
+
         if (_bonusMultiplier < 3 && _player)
         {
+            _pointsBeforeBonus += (int)(_levelPoints * _bonusMultiplier);
+            _levelPoints = 0;
             _bonusMultiplier++;
             Instantiate(_blockSpawner, transform.position, Quaternion.identity);
         }
+
     }
 
     void OnPlayerDead()
     {
-        //PointsManager.Instance.Points += _currentPoints;
         _isPlayerDead = true;
 
         _inGameCNV.SetActive(false);
@@ -92,7 +102,8 @@ public class LevelManager : MonoBehaviour
         SceneSwitcher.Instance.SwitchScene(0);
     }
 
-    void ShowAdd(){
+    void ShowAdd()
+    {
         YandexGame.RewVideoShow(0);
     }
 }
